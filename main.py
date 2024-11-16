@@ -5,9 +5,6 @@ from crewai import Crew, Agent, Task
 from crewai_tools import WebsiteSearchTool
 from langchain.chat_models import ChatOpenAI
 from urlbase import url
-
-web_rag_tool = WebsiteSearchTool()
-
 load_dotenv()
 
 openai_model = os.getenv("OPENAI_MODEL_NAME")
@@ -18,6 +15,8 @@ if not openai_api_key:
 elif not openai_model:
     st.error("❌ OPENAI_MODEL_NAME is not set. Please check your .env file.")
 else:
+    web_rag_tool = WebsiteSearchTool()
+    
     llm = ChatOpenAI(
         model=openai_model,
         api_key=openai_api_key,
@@ -68,11 +67,7 @@ else:
         </style>
     """, unsafe_allow_html=True)
 
-
-
-
-    st.image('https://blptjogja.or.id/wp-content/uploads/2024/07/Logo-DIY-1.png', width=50)
-    st.image('https://blptjogja.or.id/wp-content/uploads/2024/07/blptjogja.png', width=400)
+    st.image('logo-blpt-gema.svg', width=450)
     
     st.title("Asisten Pelatihan BLPT Yogyakarta")
 
