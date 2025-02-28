@@ -6,7 +6,7 @@ from crewai_tools import WebsiteSearchTool
 from langchain.chat_models import ChatOpenAI
 from urlbase import url
 load_dotenv()
-
+ 
 openai_model = os.getenv("OPENAI_MODEL_NAME")
 openai_api_key = os.getenv("OPENAI_API_KEY")
 
