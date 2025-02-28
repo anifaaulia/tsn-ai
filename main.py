@@ -24,13 +24,15 @@ else:
     )
 
     st.set_page_config(
-    page_title="AI BLPT Yogyakarta",
-    page_icon="🛠️",
+    page_title="TSN x Gema Foundation AI",
+    page_icon="🤖",
     layout="centered",
     )
 
     st.markdown("""
         <style>
+
+
             [data-testid="stAppViewContainer"] {
                 background-color: #ffffff;
             }
@@ -43,7 +45,16 @@ else:
             [data-testid="stSidebar"] {
                 background-color: #f8f9fa;
             }
-            .stTextInput > div > div > input {
+            .stSelectbox div[data-baseweb="select"] {
+                background-color: #ffffff !important;
+                color: #000000 !important;
+                border: 1px solid #d1d1d1 !important; /* Optional border */
+            }
+            .stSelectbox div[role="listbox"] {
+                background-color: #ffffff !important;
+                color: #000000 !important;
+            }
+            .stSelectbox > div > div > input {
                 background-color: #ffffff;
                 color: #000000 !important;
             }
@@ -57,31 +68,32 @@ else:
                 color: #000000;
             }
             .stButton button {
-                background-color: #ff4b4b;
+                background-color: #ec1856;
                 color: #ffffff;
             }
             /* Added style for text input label */
             .stTextInput label {
                 color: #000000 !important;
             }
+            
         </style>
     """, unsafe_allow_html=True)
 
-    st.image('logo-blpt-gema.svg', width=450)
+    st.image('tsn-gema.png', width=450)
     
-    st.title("Asisten Pelatihan BLPT Yogyakarta")
+    st.title("TSN x Gema Foundation AI")
 
     st.markdown("""
-        Selamat datang di Asisten Pelatihan BLPT Yogyakarta. 
-        Silakan ajukan pertanyaan Anda di kolom di bawah ini dan kami akan membantu Anda dengan informasi yang Anda butuhkan.
+       This AI was created by Gema Foundation and collaborated with Taksina Bisnis Collage as a partner regarding technology collaboration 🇮🇩 x 🇹🇭
     """)
 
-    question = st.text_input("Masukkan pertanyaan Anda:", "")
+    question = st.text_input("Enter your question:", "")
+    language = st.selectbox("Select language:", ["English 🇺🇸", "Indonesian 🇮🇩", "Thai 🇹🇭"])
 
     asisten_pelatihan = Agent(
-        role='Asisten Pelatihan BLPT',
-        goal=f'Memberikan informasi secara keseluruhan di BLPT Yogyakarta, tentang {question}',
-        backstory='Asisten yang berpengetahuan luas dan berdedikasi untuk membantu pengguna menemukan program pelatihan yang tepat.',
+        role='TSN x Gema Foundation AI',
+        goal=f'Provides overall information on TSN Collage, about {question}',
+        backstory='Knowledgeable and dedicated assistant to help users find information related to TSN Collage.',
         tools=[web_rag_tool],
         verbose=True,
         memory=True
@@ -89,32 +101,33 @@ else:
 
     riset_program_pelatihan = Task(
         description=(
-            f'Meneliti tentang {question} di Balai Latihan Pembinaan Teknologi Yogyakarta (BLPT). '
-            f"Kita akan fokus mengeksplorasi info terkini dan akurat dari {url}. Pastikan sumber informasinya valid"
+            f'Researching about {question} on TSN Collage. We will focus on exploring information related to TSN Collage Takina Business Collage.'
+            f"We will focus on exploring the latest and accurate information from {url}. Make sure the source of the information is valid"
         ),
         expected_output=(
             f"""
-            ✨ Berikan laporan ringkas dalam bahasa indonesia yang:
+            ✨Provide a concise report in the appropriate language {language}:
             
-            📝 Maksimal 3 baris per paragraf
-            🎯 Fokus menjawab tentang {question}
-            ❌ Katakan Maaf jika tidak ada info valid
-            
-            Format jawaban:
-            
-            💡 [Judul yang Catchy]
-            
-            [Paragraf 1 - max 3 baris]
-            [Paragraf 2 - max 3 baris] (opsional)
-            
-            🔍 Sumber: [link valid]
+            📝 Maximum 3 lines per paragraph
+            🎯 Focus on answering about {question}
+            ❌ Apologize if there is no valid information
+
+            Answer format:
+
+            💡 [Catchy Title]
+
+            [Paragraph 1 - max 3 lines]
+            [Paragraph 3 - max 3 lines] 
+            [Paragraph 2 - max 3 lines] 
+
+            🔍 Source: [valid link]
             """
         ),
         agent=asisten_pelatihan,
         tools=[web_rag_tool]
     )
     
-    search_button = st.button("Kirim")
+    search_button = st.button("Send")
 
     if search_button:
         if not question:
@@ -127,7 +140,7 @@ else:
                 manager_llm=llm
             )
 
-            with st.spinner("🔄 Sedang mencari informasi..."):
+            with st.spinner("🔄 Looking for information..."):
                 result = crew.kickoff()
 
             st.markdown(result)

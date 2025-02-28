@@ -1,0 +1,6 @@
+streamlit
+dotenv
+crewai
+crewai_tools
+langchain
+# urlbase
